@@ -27,15 +27,20 @@ export class PostResolver {
     return em.find(Post, {});
   }
 
+  /*
+  get post
+  */
   @Query(() => Post, { nullable: true })
-  post(@Arg("id", () => Int) id: number): Promise<Post | undefined> {
-    return Post.findOne(id);
+  post(@Arg("id", () => Int) id: number, @Ctx() { em }: MyContext): Promise<Post | undefined> {
+    return Post.findOne({ id });
   }
   /*
   Create post
   */
-  @Mutation(() => Post, { nullable: true })
-  Post(@Arg("id", () => Int) id: number, @Ctx() { em }: MyContext): Promise<Post | null> {
-    return Post.findOne(Post, { id });
+  @Mutation(() => Post)
+  async createPost(@Arg("title", () => String) title: String, @Ctx() { em }: MyContext): Promise<Post | null> {
+    const post = em.create(Post, {title})
+    await em.persistAndFlush(post);
+    return post;
   }
 }
