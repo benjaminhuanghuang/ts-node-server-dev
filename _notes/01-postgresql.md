@@ -18,3 +18,9 @@ add config to package.json
     ]
   }
 ```
+
+
+## Mikro-orm
+```
+  npx mikiro-orm migration:create --run 
+```
